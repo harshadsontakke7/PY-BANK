@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.vscode/
+.idea/
+.DS_Store
+*.log
