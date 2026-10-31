@@ -1,0 +1,13 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="toast-stack" aria-live="polite">
+  {% for category, message in messages %}
+  <div class="notice notice-{{ category }}" role="{{ 'alert' if category == 'danger' else 'status' }}">
+    <i class="fa-solid {{ {'success':'fa-circle-check','danger':'fa-circle-exclamation','warning':'fa-triangle-exclamation'}.get(category,'fa-circle-info') }}"></i>
+    <span>{{ message }}</span>
+    <button type="button" class="notice-close" aria-label="Dismiss"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}

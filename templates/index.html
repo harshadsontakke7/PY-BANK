@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Welcome{% endblock %}
+{% block shell %}
+<div class="landing">
+  <header class="landing-nav">
+    <a class="brand" href="{{ url_for('index') }}">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="" width="44" height="44">
+      <span><strong>PY BANK</strong><small>Secure • Simple • Smart</small></span>
+    </a>
+    <div class="d-flex gap-2">
+      <a class="btn btn-ghost-light" href="{{ url_for('login') }}">Log in</a>
+      <a class="btn btn-light fw-semibold" href="{{ url_for('register') }}">Open account</a>
+    </div>
+  </header>
+  <section class="landing-hero">
+    <div>
+      <h1>Your money,<br>clear at a glance.</h1>
+      <p>Deposit, withdraw and send money between accounts, then watch your balance move on a chart built from your own transactions.</p>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-light btn-lg fw-semibold" href="{{ url_for('register') }}">Create an account</a>
+        <a class="btn btn-ghost-light btn-lg" href="{{ url_for('login') }}">Log in</a>
+      </div>
+    </div>
+    <div class="hero-art">{% include '_bank_art.html' %}</div>
+  </section>
+  <section class="landing-features">
+    <article><i class="fa-solid fa-paper-plane"></i><h3>Instant transfers</h3><p>Both accounts update together or not at all.</p></article>
+    <article><i class="fa-solid fa-lock"></i><h3>Protected PINs</h3><p>Salted PBKDF2 hashing, session timeouts and login rate limits.</p></article>
+    <article><i class="fa-solid fa-file-csv"></i><h3>Your records</h3><p>Search your history and export it as CSV whenever you need.</p></article>
+  </section>
+  <footer class="landing-foot">PY BANK · Educational project. Not intended for real banking or real funds.</footer>
+</div>
+{% endblock %}

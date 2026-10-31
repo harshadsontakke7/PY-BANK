@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<section class="banner">
+  <div>
+    <p class="banner-greet">{{ greeting }},</p>
+    <h1>{{ account.name }} <span aria-hidden="true">👋</span></h1>
+    <p class="banner-sub">Here's your account summary: {{ stats.total_transactions }} transaction{{ '' if stats.total_transactions == 1 else 's' }} on record. Keep banking, keep growing!</p>
+  </div>
+  <div class="banner-art">{% include '_bank_art.html' %}</div>
+</section>
+
+<section class="stat-grid">
+  <article class="stat stat-blue">
+    <span class="stat-icon"><i class="fa-solid fa-wallet"></i></span>
+    <div><p>Current Balance</p>
+      <div class="stat-value-row">
+        <strong data-balance-value data-real="{{ account.balance|money }}">{{ account.balance|money }}</strong>
+        <button class="eye" type="button" data-balance-toggle aria-label="Hide balance"><i class="fa-solid fa-eye"></i></button>
+      </div></div>
+  </article>
+  <article class="stat stat-green">
+    <span class="stat-icon"><i class="fa-solid fa-arrow-up"></i></span>
+    <div><p>Total Deposits</p><strong>{{ stats.total_deposits|money }}</strong></div>
+  </article>
+  <article class="stat stat-red">
+    <span class="stat-icon"><i class="fa-solid fa-arrow-down"></i></span>
+    <div><p>Total Withdrawals</p><strong>{{ stats.total_withdrawals|money }}</strong></div>
+  </article>
+  <article class="stat stat-purple">
+    <span class="stat-icon"><i class="fa-solid fa-right-left"></i></span>
+    <div><p>Total Transactions</p><strong>{{ stats.total_transactions }}</strong></div>
+  </article>
+</section>
+
+<section class="row g-4 mb-4">
+  <div class="col-xl-7">
+    <div class="panel h-100">
+      <div class="panel-head">
+        <h2><span class="head-icon"><i class="fa-solid fa-chart-line"></i></span>Account Balance Overview</h2>
+        <select class="form-select form-select-sm range-select" id="rangeSelect" aria-label="Chart range">
+          <option value="7d">Last 7 Days</option>
+          <option value="30d">Last 30 Days</option>
+          <option value="all">All Time</option>
+        </select>
+      </div>
+      <div class="chart-box">
+        <canvas id="balanceChart" data-url="{{ url_for('balance_history') }}" role="img" aria-label="Line chart of your account balance over time"></canvas>
+        <p class="chart-msg" id="chartMsg" hidden></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-5">
+    <div class="panel h-100">
+      <div class="panel-head"><h2><span class="head-icon"><i class="fa-solid fa-bolt"></i></span>Quick Actions</h2></div>
+      <div class="quick-grid">
+        <a class="quick quick-blue" href="{{ url_for('deposit') }}"><span class="q-icon"><i class="fa-solid fa-upload"></i></span><span><strong>Deposit Money</strong><small>Add funds to your account</small></span><i class="fa-solid fa-chevron-right"></i></a>
+        <a class="quick quick-green" href="{{ url_for('withdraw') }}"><span class="q-icon"><i class="fa-solid fa-download"></i></span><span><strong>Withdraw Money</strong><small>Get cash from your account</small></span><i class="fa-solid fa-chevron-right"></i></a>
+        <a class="quick quick-purple" href="{{ url_for('transfer') }}"><span class="q-icon"><i class="fa-solid fa-paper-plane"></i></span><span><strong>Transfer Money</strong><small>Send money to others</small></span><i class="fa-solid fa-chevron-right"></i></a>
+        <a class="quick quick-sky" href="{{ url_for('profile') }}"><span class="q-icon"><i class="fa-solid fa-user"></i></span><span><strong>View Profile</strong><small>Manage your account</small></span><i class="fa-solid fa-chevron-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2><span class="head-icon"><i class="fa-regular fa-clock"></i></span>Recent Transactions</h2>
+    <a class="btn btn-outline-soft btn-sm" href="{{ url_for('transactions') }}">View All <i class="fa-solid fa-chevron-right ms-1"></i></a>
+  </div>
+  {% include '_tx_table.html' %}
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+{% endblock %}

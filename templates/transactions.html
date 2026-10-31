@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Transaction History{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel-head">
+    <h2><span class="head-icon"><i class="fa-regular fa-clock"></i></span>Transaction History
+      <span class="count">{{ total }} record{{ '' if total == 1 else 's' }}</span></h2>
+    <a class="btn btn-brand btn-sm" href="{{ url_for('export_csv', q=q or None, sort=sort, type=tx_type) }}"><i class="fa-solid fa-file-arrow-down me-2"></i>Download CSV</a>
+  </div>
+  <form class="filters" method="get" action="{{ url_for('transactions') }}">
+    <div class="input-icon grow"><i class="fa-solid fa-magnifying-glass"></i>
+      <input class="form-control" type="search" name="q" value="{{ q }}" maxlength="60" placeholder="Search by ID, type, amount or account" aria-label="Search">
+    </div>
+    <select class="form-select" name="type" aria-label="Type" data-autosubmit>
+      {% for t in type_options %}<option value="{{ t }}" {{ 'selected' if t == tx_type }}>{{ 'All types' if t == 'all' else t }}</option>{% endfor %}
+    </select>
+    <select class="form-select" name="sort" aria-label="Sort by date" data-autosubmit>
+      <option value="newest" {{ 'selected' if sort == 'newest' }}>Newest first</option>
+      <option value="oldest" {{ 'selected' if sort == 'oldest' }}>Oldest first</option>
+    </select>
+    <button class="btn btn-outline-soft" type="submit">Search</button>
+  </form>
+
+  {% set show_other = true %}
+  {% include '_tx_table.html' %}
+
+  {% if pages > 1 %}
+  <nav class="pager" aria-label="Pages">
+    <a class="btn btn-outline-soft btn-sm {{ 'disabled' if page <= 1 }}" href="{{ url_for('transactions', page=page-1, q=q or None, sort=sort, type=tx_type) }}">Previous</a>
+    <span>Page {{ page }} of {{ pages }}</span>
+    <a class="btn btn-outline-soft btn-sm {{ 'disabled' if page >= pages }}" href="{{ url_for('transactions', page=page+1, q=q or None, sort=sort, type=tx_type) }}">Next</a>
+  </nav>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% if rows is defined %}{% set tx_rows = rows %}{% else %}{% set tx_rows = recent %}{% endif %}
+{% if tx_rows %}
+<div class="table-responsive">
+  <table class="table tx-table align-middle mb-0">
+    <thead><tr>
+      <th>Transaction ID</th><th>Type</th><th>Amount</th><th>Previous Balance</th><th>Current Balance</th>
+      {% if show_other %}<th>Other Account</th>{% endif %}<th>Date &amp; Time</th>
+    </tr></thead>
+    <tbody>
+    {% for t in tx_rows %}
+      <tr>
+        <td><code title="{{ t.transaction_id }}">{{ t.transaction_id|short_id }}</code></td>
+        <td><span class="pill pill-{{ t.transaction_type|tx_class }}">{{ t.transaction_type }}</span></td>
+        <td class="fw-semibold">{{ t.amount|money }}</td>
+        <td>{{ t.previous_balance|money }}</td>
+        <td>{{ t.current_balance|money }}</td>
+        {% if show_other %}<td>{{ t.counterparty_account|mask if t.counterparty_account else '—' }}</td>{% endif %}
+        <td class="text-nowrap">{{ t.created_at|dt }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty"><i class="fa-regular fa-folder-open"></i><p>No transactions to show yet.</p></div>
+{% endif %}

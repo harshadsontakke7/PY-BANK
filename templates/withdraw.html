@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Withdraw Money{% endblock %}
+{% block content %}
+<div class="narrow">
+  <div class="panel form-panel">
+    <div class="form-hero quick-green">
+      <span class="q-icon"><i class="fa-solid fa-download"></i></span>
+      <div><h1>Withdraw Money</h1><p>Available balance: <strong>{{ account.balance|money }}</strong></p></div>
+    </div>
+    <form method="post" novalidate data-validate data-loading="Withdrawing…">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label class="form-label" for="amount">Amount (₹)</label>
+      <div class="input-icon"><i class="fa-solid fa-indian-rupee-sign"></i>
+        <input class="form-control form-control-lg" id="amount" name="amount" type="number" inputmode="decimal"
+               min="0.01" step="0.01" max="999999999999.99" required placeholder="0.00" value="{{ form.get('amount','') }}">
+      </div>
+      <div class="form-text">You can withdraw up to your available balance.</div>
+      <div class="invalid-feedback">Enter an amount greater than ₹0.</div>
+      <div class="chips" aria-label="Quick amounts">
+        {% for v in [500, 1000, 5000, 10000] %}<button type="button" class="chip" data-amount-target="amount" data-amount="{{ v }}">₹{{ '{:,}'.format(v) }}</button>{% endfor %}
+      </div>
+      <button class="btn btn-brand w-100 mt-4" type="submit">Withdraw money</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

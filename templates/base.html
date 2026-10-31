@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>{% block title %}PY BANK{% endblock %} · PY BANK</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+{% block shell %}
+<div class="app-shell">
+  {% set nav = [
+    ('dashboard', 'Dashboard', 'fa-house'),
+    ('balance', 'Check Balance', 'fa-wallet'),
+    ('deposit', 'Deposit Money', 'fa-upload'),
+    ('withdraw', 'Withdraw Money', 'fa-download'),
+    ('transfer', 'Transfer Money', 'fa-paper-plane'),
+    ('transactions', 'Transaction History', 'fa-clock-rotate-left'),
+    ('profile', 'Profile', 'fa-user'),
+  ] %}
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="{{ url_for('dashboard') }}">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="" width="46" height="46">
+      <span><strong>PY BANK</strong><small>Secure • Simple • Smart</small></span>
+    </a>
+    <nav class="nav-list">
+      {% for endpoint, label, icon in nav %}
+      <a class="nav-item {{ 'active' if request.endpoint == endpoint }}" href="{{ url_for(endpoint) }}"
+         {% if request.endpoint == endpoint %}aria-current="page"{% endif %}>
+        <i class="fa-solid {{ icon }}"></i><span>{{ label }}</span>
+      </a>
+      {% endfor %}
+      <hr>
+      <form method="post" action="{{ url_for('logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="nav-item nav-button" type="submit"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
+      </form>
+    </nav>
+    <div class="sidebar-foot"><i class="fa-solid fa-shield-halved"></i><span>Your Security<br>Our Priority</span></div>
+  </aside>
+  <div class="sidebar-backdrop" data-sidebar-close></div>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn d-lg-none" type="button" data-sidebar-toggle aria-label="Open menu" aria-controls="sidebar">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <form class="search" method="get" action="{{ url_for('transactions') }}" role="search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" name="q" maxlength="60" placeholder="Search transactions…" aria-label="Search transactions">
+      </form>
+      <a class="icon-btn ms-auto" href="{{ url_for('transactions') }}" aria-label="Transaction history"><i class="fa-regular fa-bell"></i></a>
+      <div class="dropdown">
+        <button class="user-chip" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="avatar">{{ account.name[:1]|upper }}</span>
+          <span class="who d-none d-sm-block"><strong>{{ account.name }}</strong><small>Account No: {{ account.account_no }}</small></span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="{{ url_for('profile') }}"><i class="fa-solid fa-user me-2"></i>Profile</a></li>
+          <li><form method="post" action="{{ url_for('logout') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="dropdown-item" type="submit"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</button></form></li>
+        </ul>
+      </div>
+    </header>
+
+    <main class="content">
+      {% include '_flash.html' %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

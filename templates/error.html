@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block shell %}
+{% if account %}
+  {{ super() }}
+{% else %}
+<div class="error-page">{% include '_error_body.html' %}</div>
+{% endif %}
+{% endblock %}
+{% block content %}{% include '_error_body.html' %}{% endblock %}

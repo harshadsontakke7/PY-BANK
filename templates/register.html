@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Create account{% endblock %}
+{% block shell %}
+<div class="auth-wrap">
+  {% include '_auth_panel.html' %}
+  <section class="auth-form-side">
+    {% include '_flash.html' %}
+    <div class="auth-card">
+      <h2>Open a new account</h2>
+      <p class="muted">It takes under a minute.</p>
+      <form method="post" novalidate data-validate data-loading="Creating account…">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="mb-3">
+          <label class="form-label" for="name">Full name</label>
+          <input class="form-control" id="name" name="name" autocomplete="name" minlength="2" maxlength="80" required value="{{ form.get('name','') }}">
+          <div class="invalid-feedback">Enter your full name.</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="account_no">Choose an account number</label>
+          <input class="form-control" id="account_no" name="account_no" inputmode="numeric" pattern="[0-9]{6,18}" maxlength="18" required value="{{ form.get('account_no','') }}">
+          <div class="form-text">6 to 18 digits.</div>
+          <div class="invalid-feedback">Account number must be 6 to 18 digits.</div>
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-sm-6">
+            <label class="form-label" for="pin">4-digit PIN</label>
+            <input class="form-control" id="pin" name="pin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="new-password" required data-digits>
+            <div class="invalid-feedback">PIN must be exactly 4 digits.</div>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label" for="confirm_pin">Confirm PIN</label>
+            <input class="form-control" id="confirm_pin" name="confirm_pin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="new-password" required data-digits data-match="pin">
+            <div class="invalid-feedback">PINs do not match.</div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="form-label" for="opening_balance">Opening balance (₹)</label>
+          <input class="form-control" id="opening_balance" name="opening_balance" type="number" min="0" step="0.01" max="999999999999.99" value="{{ form.get('opening_balance','') or '0' }}" required>
+          <div class="invalid-feedback">Enter an amount of ₹0 or more.</div>
+        </div>
+        <button class="btn btn-brand w-100" type="submit">Create account</button>
+      </form>
+      <p class="switch">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+    </div>
+  </section>
+</div>
+{% endblock %}

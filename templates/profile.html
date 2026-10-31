@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="narrow">
+  <div class="panel profile">
+    <div class="profile-head">
+      <span class="avatar avatar-lg">{{ account.name[:1]|upper }}</span>
+      <div><h1>{{ account.name }}</h1><p class="muted mb-0">PY BANK customer</p></div>
+    </div>
+    <dl class="details">
+      <div><dt>Customer name</dt><dd>{{ account.name }}</dd></div>
+      <div><dt>Account number</dt><dd>{{ account.account_no }}</dd></div>
+      <div><dt>Account created</dt><dd>{{ account.created_at|dt('%d %b %Y') }}</dd></div>
+      <div><dt>Current balance</dt><dd>{{ account.balance|money }}</dd></div>
+      <div><dt>Transactions on record</dt><dd>{{ stats.total_transactions }}</dd></div>
+    </dl>
+    <form method="post" action="{{ url_for('logout') }}" class="mt-3">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-outline-danger" type="submit"><i class="fa-solid fa-right-from-bracket me-2"></i>Log out</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

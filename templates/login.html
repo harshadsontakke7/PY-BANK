@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Log in{% endblock %}
+{% block shell %}
+<div class="auth-wrap">
+  {% include '_auth_panel.html' %}
+  <section class="auth-form-side">
+    {% include '_flash.html' %}
+    <div class="auth-card">
+      <h2>Log in to your account</h2>
+      <p class="muted">Enter your account number and 4-digit PIN.</p>
+      <form method="post" novalidate data-validate data-loading="Signing in…">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="mb-3">
+          <label class="form-label" for="account_no">Account number</label>
+          <div class="input-icon"><i class="fa-solid fa-id-card"></i>
+            <input class="form-control" id="account_no" name="account_no" inputmode="numeric" autocomplete="username"
+                   pattern="[0-9]{1,32}" maxlength="32" required value="{{ form.get('account_no','') }}">
+          </div>
+          <div class="invalid-feedback">Enter your account number (digits only).</div>
+        </div>
+        <div class="mb-4">
+          <label class="form-label" for="pin">4-digit PIN</label>
+          <div class="input-icon"><i class="fa-solid fa-key"></i>
+            <input class="form-control" id="pin" name="pin" type="password" inputmode="numeric" autocomplete="current-password"
+                   pattern="[0-9]{4}" maxlength="4" required data-digits>
+          </div>
+          <div class="invalid-feedback">PIN must be exactly 4 digits.</div>
+        </div>
+        <button class="btn btn-brand w-100" type="submit">Log in</button>
+      </form>
+      <p class="switch">New to PY BANK? <a href="{{ url_for('register') }}">Create an account</a></p>
+    </div>
+  </section>
+</div>
+{% endblock %}

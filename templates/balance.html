@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Check Balance{% endblock %}
+{% block content %}
+<div class="narrow">
+  <section class="banner banner-compact">
+    <div>
+      <p class="banner-greet">Available balance</p>
+      <h1><span data-balance-value data-real="{{ account.balance|money }}">{{ account.balance|money }}</span>
+        <button class="eye eye-light" type="button" data-balance-toggle aria-label="Hide balance"><i class="fa-solid fa-eye"></i></button></h1>
+      <p class="banner-sub">Read live from your account records</p>
+    </div>
+  </section>
+  <div class="panel">
+    <div class="panel-head"><h2><span class="head-icon"><i class="fa-solid fa-id-card"></i></span>Account details</h2></div>
+    <dl class="details">
+      <div><dt>Account holder</dt><dd>{{ account.name }}</dd></div>
+      <div><dt>Account number</dt><dd>{{ account.account_no }}</dd></div>
+      <div><dt>Account opened</dt><dd>{{ account.created_at|dt('%d %b %Y') }}</dd></div>
+      <div><dt>Account type</dt><dd>Savings</dd></div>
+    </dl>
+    <div class="d-flex flex-wrap gap-2 mt-3">
+      <a class="btn btn-brand" href="{{ url_for('deposit') }}">Deposit</a>
+      <a class="btn btn-outline-soft" href="{{ url_for('withdraw') }}">Withdraw</a>
+      <a class="btn btn-outline-soft" href="{{ url_for('transfer') }}">Transfer</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
