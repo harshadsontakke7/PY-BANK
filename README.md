@@ -4,6 +4,12 @@ A Flask + Neon PostgreSQL banking demo converted from the original Streamlit app
 Bootstrap 5, Chart.js and Font Awesome are loaded from CDNs; there is no build step.
 
 > Educational project. Not intended for real banking or real funds.
+>
+> ## Live demo
+
+**https://py-bank-1e97.onrender.com/dashboard**
+
+> The app runs on Render's free plan, so it sleeps after 15 minutes without traffic. The first visit can take about a minute to wake up. Please use test data only, not real PINs or money.
 
 ## What was kept from your Streamlit app
 
